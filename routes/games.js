@@ -107,23 +107,23 @@ router.put('/:id', (request, response) => {
 });
 
 //put - change boolean value
-// router.put('/kids/:id', (request, response)=>{
-//   let sql = "UPDATE favorite_boardgames SET ? WHERE id=?";
-//   connection.query(sql, [request.body, request.params.id], (err, results)=>{
-//     if(err){
-//       response.status(500).send({errorMessage: 'Error to update the game'});
-//     }else{
-//       sql = "SELECT * FROM favorite_boardgames WHERE id=?";
-//       connection.query(sql, request.params.id, (err, results)=>{
-//         if(results.length === 0){
-//           response.status(404).send({errorMessage: `No game found with this id: ${request.params.id}`});
-//         }else{
-//           response.status(200).json(results[0]);
-//         }
-//       });
-//     }
-//   });
-// });
+router.put('/kids/:id', (request, response)=>{
+   let sql = "UPDATE favorite_boardgames SET kids = CASE WHEN id=? THEN 1 ELSE 0 END";
+   connection.query(sql, [request.body, request.params.id], (err, results)=>{
+     if(err){
+       response.status(500).send({errorMessage: 'Error to update the game'});
+     }else{
+       sql = "SELECT * FROM favorite_boardgames WHERE id=?";
+       connection.query(sql, request.params.id, (err, results)=>{
+         if(results.length === 0){
+           response.status(404).send({errorMessage: `No game found with this id: ${request.params.id}`});
+         }else{
+           response.status(200).json(results[0]);
+         }
+       });
+     }
+   });
+ });
 
 
 //delete - an entity
